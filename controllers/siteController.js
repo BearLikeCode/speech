@@ -15,6 +15,12 @@ exports.index = (req, res, next) => {
 exports.fromFile = (req, res) => {
 	let imageFile, filename, dot, filelength, filenameor, ext, filenamemd5, fileFull, lang;
 
+	let dir = './public/uploads/';
+
+	if (!fs.existsSync(dir)){
+		fs.mkdirSync(dir);
+	}
+
 	lang = req.body.lang;
 	imageFile = req.files.file;
 	filename = req.files.file.name; //common with extension
@@ -47,6 +53,12 @@ exports.fromYoutube = async (req, res) => {
 	const filenamemd5 = `${crypto.createHash('md5').update('test' + Date.now()).digest("hex")}`;;
 
 	let { link, lang } = req.body;
+
+	let dir = './public/uploads/';
+
+	if (!fs.existsSync(dir)){
+		fs.mkdirSync(dir);
+	}
 
 	async.auto({
 		fileFull: cb => videoConfig({  filenamemd5, link }, cb),
