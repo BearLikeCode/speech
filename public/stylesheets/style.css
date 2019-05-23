@@ -1,0 +1,46 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+* {
+	outline: 0;
+}
+
+.formGen {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+	height: 600px;
+	max-width: 528px;
+}
+
+.formWrapper {
+	height: 100%;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-evenly;
+}
+
+.label {
+	font-size: 20px;
+}
+
+.genMargin {
+	margin: 20px 0;
+}
+
+.input {
+	width: 100%;
+	border: 1px solid black;
+}
+
+.input:focus {
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+#text {
+	border: 1px solid black;
+	resize: none
+}

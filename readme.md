@@ -1,0 +1,1 @@
+GOOGLE_APPLICATION_CREDENTIALS="/home/bearcoder/Downloads/name.json" npm start

@@ -1,0 +1,36 @@
+extends layout
+
+block content
+	header
+		nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+			a.navbar-brand(href="#") Google Speech To Text
+	article.article
+			.formGen
+				.container.formWrapper
+					.form.formOne.center
+						form(enctype='multipart/form-data', id="formFile")
+							.form-group
+								label.label Choose file on your computer
+								div
+									.left
+									input(type='file', name='file' value='Choose File').genMargin#file
+									.right
+										select(name="lang")
+											each val, index in lang
+												option(value=val)= index
+								br
+								button.btn.btn-dark(type='submit', name='file').button.btn-block#btnFromFile Upload
+
+					.form.formTwo
+						form(enctype='multipart/form-data', id="formYoutube")
+							.form-group
+								label.label Paste link from youtube
+								input(type='text', name='link').input.genMargin
+								select(name="lang")
+									each val, index in lang
+										option(value=val)= index
+								br
+								br
+								button.btn.btn-dark(type='submit', name='file').button.btn-block#btnFromYoutube Upload
+
+					textarea(rows="10" cols="10")#text= text
