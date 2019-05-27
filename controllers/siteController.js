@@ -43,11 +43,10 @@ exports.fromFile = (req, res, next) => {
 			// optional callback
 			function(err, data) {
 				if (err) {
-					return next(res.status(500).json(err));
+					res.status(500).json(err);
 				}
 
 				res.status(200).json({ text: data.transcription });
-				return next();
 			});
 };
 
