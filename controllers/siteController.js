@@ -2,11 +2,13 @@ const fs = require('fs');
 const youtubedl = require('youtube-dl');
 const crypto = require('crypto');
 const async = require('async');
-const ffmpeg = require('fluent-ffmpeg');
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 const bucketName = 'spechtemp';
 const lang = require('../public/lang/lang');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 exports.index = (req, res, next) => {
 	res.render('index', { lang: lang });

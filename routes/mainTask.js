@@ -5,10 +5,10 @@ const { timeout } = require('../middleware/setTimeout.js');
 
 router.route('/file')
 	.post(fromFile)
-	.post(timeout);
+	// .post(timeout);
 
 router.route('/youtube')
 	.post(fromYoutube)
-	.post(timeout);
+	// .post(timeout);
 
 module.exports = router;
