@@ -40,15 +40,14 @@ exports.fromFile = (req, res, next) => {
 				transcription: ['cloudIn', (data, cb) => speechFunc(lang, filenamemd5, cb)],
 				cloudOut: ['transcription', (data, cb) => cloudOutFunc(filenamemd5, cb)],
 			},
-
 			// optional callback
 			function(err, data) {
 				if (err) {
-					console.log(err);
 					return next(res.status(500).json(err));
 				}
 
-				return next(res.status(200).json({ text: data.transcription }));
+				res.status(200).json({ text: data.transcription });
+				return next();
 			});
 };
 
@@ -57,7 +56,7 @@ exports.fromYoutube = async (req, res, next) => {
 
 	let { link, lang } = req.body;
 
-	if (link === '^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+') {
+	if (link.match('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+')) {
 
 		let dir = './public/uploads/';
 
@@ -73,14 +72,13 @@ exports.fromYoutube = async (req, res, next) => {
 			cloudOut: ['transcription', (data, cb) => cloudOutFunc(filenamemd5, cb)]
 		}, (err, data) => {
 			if (err) {
-				console.log(err);
-				return next(res.status(500).json(err));
+				res.status(500).json(err);
 			}
 			console.log(`Transcription: ${data.transcription}`);
-			return next(res.status(200).json({text: data.transcription}));
+			res.status(200).json({text: data.transcription});
 		});
 	} else {
-		return next(res.status(200).json({text: 'you paste non youtube url'}));
+		res.status(200).json({text: 'you paste non youtube url'});
 	}
 };
 
@@ -181,9 +179,6 @@ function speechFunc(lang, filenamemd5, cb) {
 		if (err) {
 			return console.log(err);
 		}
-
-		console.log(`Transcription: ${data.transcription}`);
-
 		return cb(null, data.transcription);
 	})
 
