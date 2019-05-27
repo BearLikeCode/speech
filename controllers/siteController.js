@@ -57,28 +57,33 @@ exports.fromYoutube = async (req, res) => {
 
 	let { link, lang } = req.body;
 
-	let dir = './public/uploads/';
+	if (link === '^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+') {
 
-	if (!fs.existsSync(dir)){
-		fs.mkdirSync(dir);
-	}
+		let dir = './public/uploads/';
 
-	async.auto({
-		fileFull: cb => videoConfig({  filenamemd5, link }, cb),
-		ffmpegWork: ['fileFull', ({ fileFull }, cb) => ffmpegFunc({ fileFull, filenamemd5 }, cb)],
-		cloudIn: ['ffmpegWork', (data, cb) => cloudInFunc(filenamemd5, cb)],
-		transcription: ['cloudIn', (data, cb) => speechFunc(lang, filenamemd5, cb)],
-		cloudOut: ['transcription', (data, cb) => cloudOutFunc(filenamemd5, cb)]
-	}, (err, data) => {
-		if (err) {
-			console.log(err);
-			return res.status(500).json(err);
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir);
 		}
 
-		console.log(`Transcription: ${data.transcription}`);
+		async.auto({
+			fileFull: cb => videoConfig({filenamemd5, link}, cb),
+			ffmpegWork: ['fileFull', ({fileFull}, cb) => ffmpegFunc({fileFull, filenamemd5}, cb)],
+			cloudIn: ['ffmpegWork', (data, cb) => cloudInFunc(filenamemd5, cb)],
+			transcription: ['cloudIn', (data, cb) => speechFunc(lang, filenamemd5, cb)],
+			cloudOut: ['transcription', (data, cb) => cloudOutFunc(filenamemd5, cb)]
+		}, (err, data) => {
+			if (err) {
+				console.log(err);
+				return res.status(500).json(err);
+			}
 
-		res.status(200).json({ text: data.transcription });
-	});
+			console.log(`Transcription: ${data.transcription}`);
+
+			res.status(200).json({text: data.transcription});
+		});
+	} else {
+		res.status(200).json({text: 'you paste non youtube url'});
+	}
 };
 
 function videoConfig({ filenamemd5, link }, cb) {
