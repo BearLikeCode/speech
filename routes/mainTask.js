@@ -4,11 +4,12 @@ const { fromFile, fromYoutube } = require('../controllers/siteController');
 const { setTimeout } = require('../middleware/setTimeout.js');
 
 router.route('/file')
-	.post(fromFile)
-	.post(setTimeout);
+	.post(setTimeout)
+	.post(fromFile);
+
 
 router.route('/youtube')
-	.post(fromYoutube)
-	.post(setTimeout);
+	.post(setTimeout)
+	.post(fromYoutube);
 
 module.exports = router;
