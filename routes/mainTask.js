@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { fromFile, fromYoutube } = require('../controllers/siteController');
+const timeout = requiere('../middleware/setTimeout.js')
 
-router.post('/file', fromFile);
+router.route('/file')
+	.post(fromFile)
+	.post(timeout);
 
-router.post('/youtube', fromYoutube);
+router.route('/youtube')
+	.post(fromYoutube)
+	.post(timeout);
 
 module.exports = router;
