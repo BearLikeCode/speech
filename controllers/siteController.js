@@ -14,7 +14,7 @@ exports.index = (req, res, next) => {
 	res.render('index', { lang: lang });
 };
 
-exports.fromFile = (req, res) => {
+exports.fromFile = (req, res, next) => {
 	let imageFile, filename, dot, filelength, filenameor, ext, filenamemd5, fileFull, lang;
 
 	let dir = './public/uploads/';
@@ -45,14 +45,14 @@ exports.fromFile = (req, res) => {
 			function(err, data) {
 				if (err) {
 					console.log(err);
-					return res.status(500).json(err);
+					return next(res.status(500).json(err));
 				}
 
-				res.status(200).json({ text: data.transcription });
+				return next(res.status(200).json({ text: data.transcription }));
 			});
 };
 
-exports.fromYoutube = async (req, res) => {
+exports.fromYoutube = async (req, res, next) => {
 	const filenamemd5 = `${crypto.createHash('md5').update('test' + Date.now()).digest("hex")}`;;
 
 	let { link, lang } = req.body;
@@ -74,15 +74,13 @@ exports.fromYoutube = async (req, res) => {
 		}, (err, data) => {
 			if (err) {
 				console.log(err);
-				return res.status(500).json(err);
+				return next(res.status(500).json(err));
 			}
-
 			console.log(`Transcription: ${data.transcription}`);
-
-			res.status(200).json({text: data.transcription});
+			return next(res.status(200).json({text: data.transcription}));
 		});
 	} else {
-		res.status(200).json({text: 'you paste non youtube url'});
+		return next(res.status(200).json({text: 'you paste non youtube url'}));
 	}
 };
 
