@@ -40,6 +40,7 @@ exports.fromFile = (req, res) => {
 				transcription: ['cloudIn', (data, cb) => speechFunc(lang, filenamemd5, cb)],
 				cloudOut: ['transcription', (data, cb) => cloudOutFunc(filenamemd5, cb)],
 			},
+
 			// optional callback
 			function(err, data) {
 				if (err) {

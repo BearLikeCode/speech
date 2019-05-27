@@ -1,4 +1,4 @@
-exports.timeout = (req, res, next) => {
+exports.setTimeout = (req, res, next) => {
 	const space = ' ';
 	let isFinished = false;
 	let isDataSent = false;
