@@ -1,45 +1,45 @@
-exports.setTimeout = (req, res, next) => {
+module.exports = (req, res, next) => {
 	const space = ' ';
 	let isFinished = false;
 	let isDataSent = false;
 
+	if (!req.url.includes('/main/youtube')) {
+		next();
+		return
+	}
+
 	res.once('finish', () => {
-		isFinished = true;
+		isFinished = true
 	});
 
 	res.once('end', () => {
-		isFinished = true;
+		isFinished = true
 	});
 
 	res.once('close', () => {
-		isFinished = true;
+		isFinished = true
 	});
 
 	res.on('data', (data) => {
-		// Look for something other than our blank space to indicate that real
-		// data is now being sent back to the client.
 		if (data !== space) {
-			isDataSent = true;
+			isDataSent = true
 		}
 	});
 
 	const waitAndSend = () => {
 		setTimeout(() => {
-			// If the response hasn't finished and hasn't sent any data back....
 			if (!isFinished && !isDataSent) {
-				// Need to write the status code/headers if they haven't been sent yet.
 				if (!res.headersSent) {
-					res.writeHead(202);
+					res.writeHead(202)
 				}
 
 				res.write(space);
 
-				// Wait another 15 seconds
-				waitAndSend();
+				waitAndSend()
 			}
-		}, 15000);
+		}, 15000)
 	};
 
 	waitAndSend();
-	next();
+	next()
 };

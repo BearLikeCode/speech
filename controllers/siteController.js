@@ -70,10 +70,6 @@ exports.fromYoutube = async (req, res, next) => {
 			transcription: ['cloudIn', (data, cb) => speechFunc(lang, filenamemd5, cb)],
 			cloudOut: ['transcription', (data, cb) => cloudOutFunc(filenamemd5, cb)]
 		}, (err, data) => {
-			if (err) {
-				res.status(500).json(err);
-			}
-			console.log(`Transcription: ${data.transcription}`);
 			res.status(200).json({text: data.transcription});
 		});
 	} else {
@@ -134,6 +130,7 @@ function cloudInFunc(filenamemd5, cb) {
 			cacheControl: 'public, max-age=31536000',
 		},
 	}, cb);
+	console.log('cloudIn');
 }
 
 function speechFunc(lang, filenamemd5, cb) {
@@ -178,6 +175,7 @@ function speechFunc(lang, filenamemd5, cb) {
 		if (err) {
 			return console.log(err);
 		}
+		console.log('speechFunc');
 		return cb(null, data.transcription);
 	})
 
@@ -185,4 +183,5 @@ function speechFunc(lang, filenamemd5, cb) {
 
 function cloudOutFunc(filenamemd5, cb) {
 	storage.bucket(bucketName).file(`${filenamemd5}.flac`).delete(cb);
+	console.log('cloudOut');
 }

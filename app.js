@@ -1,19 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
 const fileUpload = require('express-fileupload');
 const basicAuth = require('basic-auth-connect');
 
-var indexRouter = require('./routes/index');
-var cloudRouter = require('./routes/cloud');
-const ffmpegRouter = require('./routes/ffmpeg');
-const speech = require('./routes/speech')
+const indexRouter = require('./routes/index');
 const mainTask = require('./routes/mainTask');
 
-var app = express();
+const app = express();
 
 app.use(basicAuth('google', 'bearcoder'));
 
@@ -29,9 +26,6 @@ app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/cloud', cloudRouter);
-app.use('/ffmpeg', ffmpegRouter);
-app.use('/speech', speech);
 app.use('/main', mainTask);
 
 // catch 404 and forward to error handler
